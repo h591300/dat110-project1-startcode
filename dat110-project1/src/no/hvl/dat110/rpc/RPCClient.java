@@ -15,34 +15,25 @@ public class RPCClient {
 	
 	public void connect() {
 		
-		// TODO - START
 		// connect using the underlying messaging layer connection
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		connection = msgclient.connect();
 	}
 	
 	public void disconnect() {
 		
-		// TODO - START
 		// disconnect/close the underlying messaging connection
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		if(connection != null) {
+			connection.close();
+		}
 	}
 	
 	public byte[] call(byte rpcid, byte[] params) {
 		
 		byte[] returnval = null;
 		
-		// TODO - START 
-		
 		/* 
-		 * 
 		Make a remote call on the RPC server by sending an RPC request message
 		and receive an RPC reply message
 		
@@ -50,13 +41,25 @@ public class RPCClient {
 				
 		The rpcid, params, and return value must be encapsulated/decapsulated
 		according to the RPC message format
-			
 		*/
-				
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		if(connection == null) {
+			connect();
+		}
+		System.out.println("[RPCClient]: calling encapsulate with rpcid:" + rpcid + ", and params: " + params.toString());
+		byte[] rpcmsg = RPCUtils.encapsulate(rpcid, params);
 		
-		// TODO - END
+		System.out.println("[RPCClient]: making Message");
+		Message message = new Message(rpcmsg);
+		
+		System.out.println("[RPCClient]: connection.send");
+		connection.send(message);
+		
+		System.out.println("[RPCClient]: connection.receive");
+		Message m = connection.receive();
+		
+		returnval = RPCUtils.decapsulate(m.getData());		
+		System.out.println("[RPCClient]: returnval:" + returnval);
+		
 		return returnval;
 		
 	}

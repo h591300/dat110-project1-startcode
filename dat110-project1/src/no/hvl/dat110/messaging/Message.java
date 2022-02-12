@@ -8,12 +8,13 @@ public class Message {
 
 	public Message(byte[] data) {
 		
-		// TODO - START
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.constructor("Message"));
+		if (data != null || data.length < 128) {
+			this.data = data;
+		}
+		else {
+			System.out.println("Feil format på data");
+		}
 			
-		// TODO - END
 	}
 
 	public byte[] getData() {
